@@ -90,14 +90,22 @@ void board_piece_merge(Board *board, const Piece *piece)
     }
 }
 
+void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH  + 1])
+{
+    for (size_t row = 0; row < BOARD_GRID_HEIGHT; row++ ) {
+	for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
+	    str[row][col] = board->cells[row][col]? '#' : '.';
+	}
+	str[row][BOARD_GRID_WIDTH] =  '\0';
+    }
+}
 
 void board_print_board(const Board *board)
 {
-    for (size_t row = BOARD_GRID_HEIGHT; row-- > 0; ) {
-	for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
-	    if (board->cells[row][col]) printf("#");
-	    else printf(".");
-	}
-	printf("\n");
+    char output[BOARD_GRID_HEIGHT][BOARD_GRID_WIDTH  + 1] = {0};
+    board_snapshot(board, output);
+    for (size_t i = BOARD_GRID_HEIGHT; i-- > 0; ) {
+	printf("%s\n", output[i]);
+
     }
 }

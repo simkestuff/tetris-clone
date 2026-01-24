@@ -10,8 +10,16 @@
 #define BOARD_GRID_WIDTH 10
 #define BOARD_GRID_HEIGHT 20
 
+#define BOARD_SNAPSHOT_CHAR_NUM  (BOARD_GRID_HEIGHT*BOARD_GRID_WIDTH+BOARD_GRID_HEIGHT)
+
 #define SPAWN_ROW  (BOARD_GRID_HEIGHT-1) 
 #define SPAWN_COL  ((BOARD_GRID_WIDTH-TETROMINO_GRID_SIZE)/2)
+
+#define MOVE_LEFT  (0, -1)
+#define MOVE_RIGHT (0,  1)
+#define MOVE_DOWN  (-1, 0)
+#define ROTATE_CW   1 // clockwise
+#define ROTATE_CCW -1 // counter-clockwise
 
 // 10x20, at some r,c position ->if 0 is empty, if 1 is full
 typedef struct {
@@ -63,7 +71,11 @@ bool board_piece_fits(const Board *board, const Piece *piece);
 // Calling this with an invalid piece is a programmer error.
 void board_piece_merge(Board *board, const Piece *piece);
 
+bool board_move_piece(const Board *board, Piece *piece, int drow, int dcol);
+bool board_rotate_piece(const Board *board, Piece *piece, int drot);
+
 // debug functions
+void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH + 1]);
 void board_print_board(const Board *board);
 
 #endif // BOARD_H
