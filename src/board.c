@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
 #include "board.h"
 
 Board board_create()
@@ -6,10 +9,95 @@ Board board_create()
     return b;
 }
 
-bool board_row_full(Board *board, size_t row)
+bool board_row_full(const Board *board, uint8_t row)
 {
     for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
 	if (board->cells[row][col] == 0) return false;
     }
     return true;
+}
+
+void board_row_clear(Board *board, uint8_t row)
+{
+    assert(row < BOARD_GRID_HEIGHT && "row index out of bounds");
+    for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
+	board->cells[row][col] = 0;
+    }
+}
+
+int board_clear_full_rows(Board *board)
+{
+    int cleared = 0;
+    for (int row = 0; row < BOARD_GRID_HEIGHT; row++) {
+	if (board_row_full(board, row)) {
+	    int rows_to_top = BOARD_GRID_HEIGHT - row - 1;
+	    if (rows_to_top) {
+		memmove(board->cells[row],
+			board->cells[row+1],
+			(sizeof board->cells[0][0]) * BOARD_GRID_WIDTH * rows_to_top);
+	    }
+	    board_row_clear(board, BOARD_GRID_HEIGHT - 1); 
+	    cleared++;
+	    row--;
+	}
+    }
+    return cleared;
+}
+
+Piece board_piece_spawn(TetrominoType type)
+{
+    return (Piece) {
+	.row = SPAWN_ROW,
+	.col = SPAWN_COL,
+	.rot = 0,
+	.type = type,
+    };
+}
+
+bool board_piece_fits(const Board *board, const Piece *piece)
+{
+    uint16_t tetromino_mask = tetrominos[piece->type].mask[piece->rot];
+    for (int row = 0; row < TETROMINO_GRID_SIZE; row++) {
+	for (int col = 0; col < TETROMINO_GRID_SIZE; col++) {
+	    if (tetromino_mask & TETROMINO_BIT(row,col)) {
+		int br = piece->row + row;
+		int bc = piece->col + col;
+		// "filled" tetromino cells shouldn't go outside
+		if (br < 0 || bc < 0 ||  
+		    br >= BOARD_GRID_HEIGHT || bc >= BOARD_GRID_WIDTH)
+		    return false;
+		if (board->cells[br][bc]) return false;
+	    }
+	}
+    }
+    return true;
+}
+
+void board_piece_merge(Board *board, const Piece *piece)
+{
+    uint16_t tetromino_mask = tetrominos[piece->type].mask[piece->rot];
+    for (int row = 0; row < TETROMINO_GRID_SIZE; row++) {
+	for (int col = 0; col < TETROMINO_GRID_SIZE; col++) {
+	    if (tetromino_mask & TETROMINO_BIT(row,col)) {
+		int br = piece->row + row;
+		int bc = piece->col + col;
+		assert(br >= 0 && br < BOARD_GRID_HEIGHT &&
+		       bc >= 0 && bc < BOARD_GRID_WIDTH &&
+		       "tetromino outside board"); 
+		board->cells[br][bc] = 1;
+	    }
+	}
+    }
+}
+
+
+void board_print_board(const Board *board)
+{
+    for (size_t row = BOARD_GRID_HEIGHT; row-- > 0; ) {
+	for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
+	    if (board->cells[row][col]) printf("#");
+	    else printf(".");
+	}
+	printf("\n");
+    }
 }
