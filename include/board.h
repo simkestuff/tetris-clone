@@ -85,6 +85,10 @@ void board_piece_merge(Board *board, const Piece *piece);
 // Returns true if the move was successful, false otherwise.
 bool board_move_piece(const Board *board, Piece *piece, Move move);
 
+// Attempts to rotate the piece by the given rotation delta.
+// The rotation is applied only if the resulting orientation fits on the board
+// (i.e. all filled cells remain within bounds and do not collide).
+// Returns true if the rotation was successful, false otherwise.
 bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot);
 
 // debug functions

@@ -103,6 +103,17 @@ bool board_move_piece(const Board *board, Piece *piece, Move move)
     return false;
 }
 
+bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot)
+{
+    Piece tmp = *piece;
+    tmp.rot = (tmp.rot + rot.drot + 4) % 4;
+    if (board_piece_fits(board, &tmp)) {
+	*piece = tmp;
+	return true;
+    }
+    return false;
+}
+
 void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH  + 1])
 {
     for (size_t row = 0; row < BOARD_GRID_HEIGHT; row++ ) {
