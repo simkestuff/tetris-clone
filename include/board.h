@@ -79,7 +79,12 @@ bool board_piece_fits(const Board *board, const Piece *piece);
 // Calling this with an invalid piece is a programmer error.
 void board_piece_merge(Board *board, const Piece *piece);
 
+// Attempts to move the piece by the given delta (move).
+// The move is applied only if the resulting position fits on the board
+// (i.e. all filled cells are within bounds and do not collide).
+// Returns true if the move was successful, false otherwise.
 bool board_move_piece(const Board *board, Piece *piece, Move move);
+
 bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot);
 
 // debug functions

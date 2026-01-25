@@ -91,6 +91,18 @@ void board_piece_merge(Board *board, const Piece *piece)
     }
 }
 
+bool board_move_piece(const Board *board, Piece *piece, Move move)
+{
+    Piece tmp = *piece;
+    tmp.row += move.drow;
+    tmp.col += move.dcol;
+    if (board_piece_fits(board, &tmp)) {
+	*piece = tmp;
+	return true;
+    }
+    return false;
+}
+
 void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH  + 1])
 {
     for (size_t row = 0; row < BOARD_GRID_HEIGHT; row++ ) {
