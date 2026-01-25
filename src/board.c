@@ -62,10 +62,11 @@ bool board_piece_fits(const Board *board, const Piece *piece)
 	    if (tetromino_mask & TETROMINO_BIT(row,col)) {
 		int br = piece->row + row;
 		int bc = piece->col + col;
-		// "filled" tetromino cells shouldn't go outside
-		if (br < 0 || bc < 0 ||  
-		    br >= BOARD_GRID_HEIGHT || bc >= BOARD_GRID_WIDTH)
-		    return false;
+		// "filled" tetromino cells shouldn't go outside board
+		// except they can be above board i.e. tetromino didn't
+		// visible on board yet
+		if (br >= BOARD_GRID_HEIGHT) continue;
+		if (br < 0 || bc < 0 || bc >= BOARD_GRID_WIDTH) return false;
 		if (board->cells[br][bc]) return false;
 	    }
 	}
