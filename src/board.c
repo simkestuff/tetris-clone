@@ -30,11 +30,11 @@ int board_clear_full_rows(Board *board)
     int cleared = 0;
     for (int row = 0; row < BOARD_GRID_HEIGHT; row++) {
 	if (board_row_full(board, row)) {
-	    int rows_to_top = BOARD_GRID_HEIGHT - row - 1;
-	    if (rows_to_top) {
+	    int rows_to_move = BOARD_GRID_HEIGHT - row - 1;
+	    if (rows_to_move) {
 		memmove(board->cells[row],
 			board->cells[row+1],
-			(sizeof board->cells[0][0]) * BOARD_GRID_WIDTH * rows_to_top);
+			(sizeof board->cells[0][0]) * BOARD_GRID_WIDTH * rows_to_move);
 	    }
 	    board_row_clear(board, BOARD_GRID_HEIGHT - 1); 
 	    cleared++;
