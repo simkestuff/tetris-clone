@@ -124,10 +124,44 @@ void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH  + 1])
     }
 }
 
+void board_snapshot_with_piece(const Board *board, const Piece *piece, char (*str)[BOARD_GRID_WIDTH + 1])
+{
+    uint16_t tetromino_mask = tetrominos[piece->type].mask[piece->rot];
+    for (size_t row = 0; row < BOARD_GRID_HEIGHT; row++ ) {
+	for (size_t col = 0; col < BOARD_GRID_WIDTH; col++) {
+	    str[row][col] = board->cells[row][col]? '#' : '.';
+	}
+	str[row][BOARD_GRID_WIDTH] =  '\0';
+    }
+
+    for (int row = 0; row < TETROMINO_GRID_SIZE; row++) {
+	for (int col = 0; col < TETROMINO_GRID_SIZE; col++) {
+	    if (tetromino_mask & TETROMINO_BIT(row,col)) {
+		int br = piece->row + row;
+		int bc = piece->col + col;
+		if (br >= 0 && br < BOARD_GRID_HEIGHT &&
+		    bc >= 0 && bc < BOARD_GRID_WIDTH) {
+		    str[br][bc] = board->cells[br][bc]? '!': 'X';
+		}
+	    }
+	}
+    }
+}
+
 void board_print_board(const Board *board)
 {
     char output[BOARD_GRID_HEIGHT][BOARD_GRID_WIDTH  + 1] = {0};
     board_snapshot(board, output);
+    for (size_t i = BOARD_GRID_HEIGHT; i-- > 0; ) {
+	printf("%s\n", output[i]);
+
+    }
+}
+
+void board_print_board_with_piece(const Board *board, const Piece *piece)
+{
+    char output[BOARD_GRID_HEIGHT][BOARD_GRID_WIDTH  + 1] = {0};
+    board_snapshot_with_piece(board, piece, output);
     for (size_t i = BOARD_GRID_HEIGHT; i-- > 0; ) {
 	printf("%s\n", output[i]);
 

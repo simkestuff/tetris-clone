@@ -93,6 +93,8 @@ bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot);
 
 // debug functions
 void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH + 1]);
+void board_snapshot_with_piece(const Board *board, const Piece *piece, char (*str)[BOARD_GRID_WIDTH + 1]);
 void board_print_board(const Board *board);
+void board_print_board_with_piece(const Board *board, const Piece *piece);
 
 #endif // BOARD_H
