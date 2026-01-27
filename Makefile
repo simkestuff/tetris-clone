@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -ggdb
 LDFLAGS =
 LIBS =
 OUTPUT = build
-SRC = board.c tetromino.c
+SRC = game.c board.c tetromino.c
 
 
 vpath %.c src
