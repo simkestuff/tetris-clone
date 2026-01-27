@@ -91,7 +91,7 @@ void board_piece_merge(Board *board, const Piece *piece)
     }
 }
 
-bool board_move_piece(const Board *board, Piece *piece, Move move)
+bool board_piece_move(const Board *board, Piece *piece, Move move)
 {
     Piece tmp = *piece;
     tmp.row += move.drow;
@@ -103,7 +103,7 @@ bool board_move_piece(const Board *board, Piece *piece, Move move)
     return false;
 }
 
-bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot)
+bool board_piece_rotate(const Board *board, Piece *piece, Rotation rot)
 {
     Piece tmp = *piece;
     tmp.rot = (tmp.rot + rot.drot + 4) % 4;

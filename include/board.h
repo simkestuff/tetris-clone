@@ -83,13 +83,13 @@ void board_piece_merge(Board *board, const Piece *piece);
 // The move is applied only if the resulting position fits on the board
 // (i.e. all filled cells are within bounds and do not collide).
 // Returns true if the move was successful, false otherwise.
-bool board_move_piece(const Board *board, Piece *piece, Move move);
+bool board_piece_move(const Board *board, Piece *piece, Move move);
 
 // Attempts to rotate the piece by the given rotation delta.
 // The rotation is applied only if the resulting orientation fits on the board
 // (i.e. all filled cells remain within bounds and do not collide).
 // Returns true if the rotation was successful, false otherwise.
-bool board_rotate_piece(const Board *board, Piece *piece, Rotation rot);
+bool board_piece_rotate(const Board *board, Piece *piece, Rotation rot);
 
 // debug functions
 void board_snapshot(const Board *board, char (*str)[BOARD_GRID_WIDTH + 1]);
