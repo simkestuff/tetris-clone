@@ -21,4 +21,7 @@ Game game_init(void);
 // it runs every timeframe != gravity timing
 void game_tick(Game *game);
 
+bool game_piece_move(Game *game, Move move);
+bool game_piece_rotate(Game *game, Rotation rot);
+
 #endif // GAME_H

@@ -36,7 +36,9 @@ void game_tick(Game *game)
 	    game->lock_timer++;
 	}
     } else {
-	// lock_timer == 0 => piece is falling  
+	// lock_timer == 0 => lock delay inactive (piece not currently locking)
+        // The piece may still be touching the ground; groundedness is checked
+        // only when gravity attempts to move the piece down.  
 	game->gravity_timer++;
 	if (game->gravity_timer >= game->gravity_threshold) {
 	    // time for gravity to work
@@ -49,4 +51,24 @@ void game_tick(Game *game)
 	    
 	}
     }
+}
+
+bool game_piece_move(Game *game, Move move)
+{
+    if (game->game_over) return false;
+    if (board_piece_move(&game->board, &game->piece, move)) {
+	if (game->lock_timer) game->lock_timer = 0;
+	return true;
+    }
+    return false;
+}
+
+bool game_piece_rotate(Game *game, Rotation rot)
+{
+    if (game->game_over) return false;
+    if (board_piece_rotate(&game->board, &game->piece, rot)) {
+	if (game->lock_timer) game->lock_timer = 0;
+	return true;
+    }
+    return false;
 }
