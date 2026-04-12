@@ -17,5 +17,8 @@ default: app
 app: main.c $(SRC)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(OUTPUT)/$@ $^
 
+gui: guiclient.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -L./lib -lraylib -lm -lX11
+
 clean:
 	rm -f build/*
