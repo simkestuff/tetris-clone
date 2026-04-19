@@ -2,9 +2,12 @@ CC = gcc
 CPPFLAGS = -Iinclude
 CFLAGS = -Wall -Wextra -ggdb
 LDFLAGS =
-LIBS =
+LIBS = ./lib
 OUTPUT = build
 SRC = game.c board.c tetromino.c
+OBJS = $(SRC:.c=.o)
+OBJS := $(addprefix $(OUTPUT)/,$(OBJS))
+LIB_NAME = $(OUTPUT)/libengine.a
 
 
 vpath %.c src
@@ -17,8 +20,16 @@ default: app
 app: main.c $(SRC)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(OUTPUT)/$@ $^
 
-gui: guiclient.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -L./lib -lraylib -lm -lX11
+$(OUTPUT)/%.o : %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(LIB_NAME): $(OBJS)
+	ar rcs $@ $^
+
+lib: $(LIB_NAME)
+
+gui: guiclient.c $(LIB_NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $< -L$(LIBS) -lraylib -lm -lX11 -L$(OUTPUT) -lengine
 
 clean:
-	rm -f build/*
+	rm -f *.o a.out build/*
