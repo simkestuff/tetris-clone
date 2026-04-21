@@ -4,7 +4,8 @@ CFLAGS = -Wall -Wextra -ggdb
 LDFLAGS =
 LIBS = ./lib
 OUTPUT = build
-SRC = game.c board.c tetromino.c
+#SRC = game.c board.c tetromino.c
+SRC = $(notdir $(wildcard src/*.c))
 OBJS = $(SRC:.c=.o)
 OBJS := $(addprefix $(OUTPUT)/,$(OBJS))
 LIB_NAME = $(OUTPUT)/libengine.a

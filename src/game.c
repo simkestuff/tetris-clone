@@ -10,8 +10,8 @@ Game game_init(void)
 	.lines_cleared = 0,
 	.score = 0,
 	.level = 1,
-	.gravity_threshold = 100,
-	.gravity_timer = 0,
+	.gravity_threshold = 0.5f,
+	.gravity_timer = 0.0f,
 	.lock_delay = 25,
 	.lock_timer = 0,
 	.game_over = false,
@@ -19,7 +19,7 @@ Game game_init(void)
     return g;
 }
 
-void game_tick(Game *game)
+void game_tick(Game *game, float gravity_delta)
 {
     if (game->lock_timer > 0) {
 	// lock_timer > 0 => piece is in lock-delay state (touching ground) 
@@ -39,7 +39,8 @@ void game_tick(Game *game)
 	// lock_timer == 0 => lock delay inactive (piece not currently locking)
         // The piece may still be touching the ground; groundedness is checked
         // only when gravity attempts to move the piece down.  
-	game->gravity_timer++;
+	//game->gravity_timer++;
+	game->gravity_timer += gravity_delta;
 	if (game->gravity_timer >= game->gravity_threshold) {
 	    // time for gravity to work
 	    if (!board_piece_move(&game->board, &game->piece, MOVE_DOWN)) {

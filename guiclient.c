@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "game.h"
+#include "board.h"
 
 void game_render(Game *game);
 
@@ -23,17 +24,18 @@ int main(void)
     Game game = game_init();
     fill_row(&game.board, 0,  0b1111111111);
     fill_row(&game.board, 1,  0b1000000000);
-    fill_row(&game.board, 2,  0b1111111111);
-    fill_row(&game.board, 3,  0b1111111111);
-    fill_row(&game.board, 4,  0b1101101100);
-    fill_row(&game.board, 8,  0b0111111110);
-    fill_row(&game.board, 18, 0b1100000011);
-    fill_row(&game.board, 19, 0b1111111111);
     
+    //game_piece_move(&game, MOVE_DOWN);
+    //game_piece_move(&game, MOVE_DOWN);
+    //game_piece_move(&game, MOVE_DOWN);
+       
     while (!WindowShouldClose()) {
 
 	BeginDrawing();
 	ClearBackground(RAYWHITE);
+	game_tick(&game, GetFrameTime());
+	//printf("game.gravity_timer=%f\n", game.gravity_timer);
+	printf("piece row=%d\n", game.piece.row);
 	game_render(&game);
 	EndDrawing();
     }
@@ -49,7 +51,21 @@ void game_render(Game *game)
     for (int row = 0; row < BOARD_GRID_HEIGHT; row++) {
 	for (int col = 0; col < BOARD_GRID_WIDTH; col++) {
 	    if (board.cells[row][col])
-		DrawRectangle(col*20, 500-row*20, 20, 20, BLACK);
+		DrawRectangle(col*20, 500-row*20, 18, 18, BLACK);
+	}
+    }
+    uint16_t tetromino_mask = tetrominos[game->piece.type].mask[game->piece.rot];
+    
+    for (int row = 0; row < TETROMINO_GRID_SIZE; row++) {
+	for (int col = 0; col < TETROMINO_GRID_SIZE; col++) {
+	    if (tetromino_mask & TETROMINO_BIT(row,col)) {
+		int br = game->piece.row + row;
+		int bc = game->piece.col + col;
+		if (br >= 0 && br < BOARD_GRID_HEIGHT &&
+		    bc >= 0 && bc < BOARD_GRID_WIDTH) {
+		    DrawRectangle(bc*20, 500 - br*20, 18, 18,RED);
+		}
+	    }
 	}
     }
 }
