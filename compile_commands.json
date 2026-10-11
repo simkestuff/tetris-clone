@@ -1,0 +1,66 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-ggdb",
+      "-Iinclude",
+      "-o",
+      "build/app",
+      "main.c"
+    ],
+    "directory": "/home/sinisa/Programming/tetris",
+    "file": "/home/sinisa/Programming/tetris/main.c",
+    "output": "/home/sinisa/Programming/tetris/build/app"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-ggdb",
+      "-Iinclude",
+      "-o",
+      "build/app",
+      "src/board.c"
+    ],
+    "directory": "/home/sinisa/Programming/tetris",
+    "file": "/home/sinisa/Programming/tetris/src/board.c",
+    "output": "/home/sinisa/Programming/tetris/build/app"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-ggdb",
+      "-Iinclude",
+      "-o",
+      "build/app",
+      "src/game.c"
+    ],
+    "directory": "/home/sinisa/Programming/tetris",
+    "file": "/home/sinisa/Programming/tetris/src/game.c",
+    "output": "/home/sinisa/Programming/tetris/build/app"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-ggdb",
+      "-Iinclude",
+      "-o",
+      "build/app",
+      "src/tetromino.c"
+    ],
+    "directory": "/home/sinisa/Programming/tetris",
+    "file": "/home/sinisa/Programming/tetris/src/tetromino.c",
+    "output": "/home/sinisa/Programming/tetris/build/app"
+  }
+]
